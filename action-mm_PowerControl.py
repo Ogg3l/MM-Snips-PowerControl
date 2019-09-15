@@ -1,14 +1,17 @@
 # !/usr/bin/env python3
 # encoding: utf-8
-import configparser
-import io
+#import configparser
+#import io
 import paho.mqtt.client as mqtt 
 import json
 
 
-
+'''
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
+'''
+
+
 
 app_name = "MM-PowerControl"
 external_topic = "external/MagicMirror2/VoiceControl"
@@ -33,6 +36,7 @@ intent_dic = {
 #MQTT Client
 mqtt_client = mqtt.Client()
 
+'''
 #Config Functions from template
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
@@ -48,7 +52,7 @@ def read_configuration_file(configuration_file):
     except (IOError, configparser.Error) as e:
         return dict()
 
-
+'''
 
 def on_connect(client, userdata, flags, rc): 
     print('Connected') 
