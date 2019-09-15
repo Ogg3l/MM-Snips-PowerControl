@@ -51,7 +51,7 @@ def read_configuration_file(configuration_file):
 
 
 def on_connect(client, userdata, flags, rc): 
-    #print('Connected') 
+    print('Connected') 
     mqtt_client.subscribe('hermes/intent/Oggel:MonitorPowerOff')
     mqtt_client.subscribe('hermes/intent/Oggel:MonitorPowerOn')
     mqtt_client.subscribe('hermes/intent/Oggel:PowerControl')
