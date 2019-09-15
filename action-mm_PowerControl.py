@@ -1,8 +1,7 @@
-# !/usr/bin/env python3
-# encoding: utf-8
-#import configparser
-#import io
-import paho.mqtt.client as mqtt 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+import paho.mqtt.client as mqtt
 import json
 
 
@@ -32,6 +31,7 @@ intent_dic = {
                             "slot_2" : "slot2"
                         }   
 }
+
 
 #MQTT Client
 mqtt_client = mqtt.Client()
