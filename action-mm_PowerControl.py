@@ -65,6 +65,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     # Parse the json response
     intent_json = json.loads(msg.payload.decode("utf-8"))
+    session_id = intent_json['sessionId']
     intentName = intent_json['intent']['intentName'].split(':')[1]
     slots = intent_json['slots']
     print('Intent {}'.format(intentName))
@@ -89,10 +90,12 @@ def on_message(client, userdata, msg):
 
         #Create Dictionary and Publish
         publish_dic = {device : power}
+        say(session_id,"Alles klar")
         mqtt_client.publish((external_topic),json.dumps(publish_dic))
 
         
-        
+def say (session_id, text):
+    mqtt_client.publish('hermes/dialogueManager/endSession', json.dumps({'text' : text, 'sessionId' : session_id}))
                                 
 if __name__ == "__main__":        
     mqtt_client.on_connect = on_connect
