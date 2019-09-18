@@ -1,24 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import configparser
 import paho.mqtt.client as mqtt
 import json
 
 
-'''
+#From Template
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
-'''
 
 
 
 app_name = "MM-PowerControl"
 external_topic = "external/MagicMirror2/VoiceControl"
 
+
 #Names of Intents and Slots
 intent_powercontrol = "PowerControl"
 intent_2 = "Intent2"
 
+#Config from Intent Names
 intent_dic = {
     intent_powercontrol : {
                             "slot_device" : "device",
@@ -36,7 +38,7 @@ intent_dic = {
 #MQTT Client
 mqtt_client = mqtt.Client()
 
-'''
+
 #Config Functions from template
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
@@ -52,7 +54,7 @@ def read_configuration_file(configuration_file):
     except (IOError, configparser.Error) as e:
         return dict()
 
-'''
+
 
 def on_connect(client, userdata, flags, rc): 
     print('Connected') 
@@ -65,23 +67,31 @@ def on_message(client, userdata, msg):
     intent_json = json.loads(msg.payload.decode("utf-8"))
     intentName = intent_json['intent']['intentName'].split(':')[1]
     slots = intent_json['slots']
-    #print('Intent {}'.format(intentName))
+    print('Intent {}'.format(intentName))
 
+
+    #For Intent PowerControl    
     if(intentName == intent_powercontrol):
-        device = slots[0]["value"]["value"]
-        action = slots[1]["value"]["value"]
+        device = ""
+        power = ""
 
-        
-        publish_dic = {device : action}
+        #Go through slots
+        for slot in slots:
+            slot_name = slot['slotName']
+            #raw_value = slot['rawValue']
+            value = slot['value']['value']
+            #print('Slot {} -> \n\tRaw: {} \tValue: {}'.format(slot_name, raw_value, value))
+
+            if(slot_name == intent_dic[intent_powercontrol]["slot_device"]):
+                device = value
+            elif(slot_name == intent_dic[intent_powercontrol]["slot_power"]):
+                power = value
+
+        #Create Dictionary and Publish
+        publish_dic = {device : power}
         mqtt_client.publish((external_topic),json.dumps(publish_dic))
 
-    '''
-    for slot in slots:
-        slot_name = slot['slotName']
-        raw_value = slot['rawValue']
-        value = slot['value']['value']
-        print('Slot {} -> \n\tRaw: {} \tValue: {}'.format(slot_name, raw_value, value))
-    '''
+        
         
                                 
 if __name__ == "__main__":        
