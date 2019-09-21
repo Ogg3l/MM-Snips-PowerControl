@@ -89,7 +89,8 @@ def on_message(client, userdata, msg):
                 power = value
 
         #Create Dictionary and Publish
-        publish_dic = {device : power}
+        #publish_dic = {device : power}
+        publish_dic = {'device' : device, 'power' : power}
         say(session_id,"Alles klar")
         mqtt_client.publish((external_topic),json.dumps(publish_dic))
 
