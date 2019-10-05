@@ -81,7 +81,7 @@ def on_message(client, userdata, msg):
             slot_name = slot['slotName']
             #raw_value = slot['rawValue']
             value = slot['value']['value']
-            #print('Slot {} -> \n\tRaw: {} \tValue: {}'.format(slot_name, raw_value, value))
+            print('Slot {} -> \n\tRaw: {} \tValue: {}'.format(slot_name, raw_value, value))
 
             if(slot_name == intent_dic[intent_powercontrol]["slot_device"]):
                 device = value
@@ -90,16 +90,15 @@ def on_message(client, userdata, msg):
 
         #Create Dictionary and Publish
         #publish_dic = {device : power}
-        if(device == "pi" && power == "an"){
+        if(device == "pi" and power == "an"):
             say(sesssion_id,"Das kann ich leider nicht")
-        }
-        else{
         
+        else:
             publish_dic = {'device' : device, 'power' : power}
             say(session_id,"Alles klar")
             mqtt_client.publish((external_topic),json.dumps(publish_dic))
 
-        }
+
 def say (session_id, text):
     mqtt_client.publish('hermes/dialogueManager/endSession', json.dumps({'text' : text, 'sessionId' : session_id}))
                                 
