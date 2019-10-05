@@ -68,7 +68,7 @@ def on_message(client, userdata, msg):
     session_id = intent_json['sessionId']
     intentName = intent_json['intent']['intentName'].split(':')[1]
     slots = intent_json['slots']
-    print('Intent {}'.format(intentName))
+    #print('Intent {}'.format(intentName))
 
 
     #For Intent PowerControl    
@@ -81,7 +81,6 @@ def on_message(client, userdata, msg):
             slot_name = slot['slotName']
             #raw_value = slot['rawValue']
             value = slot['value']['value']
-            print('Slot {} -> \n\tRaw: {} \tValue: {}'.format(slot_name, raw_value, value))
 
             if(slot_name == intent_dic[intent_powercontrol]["slot_device"]):
                 device = value
@@ -91,7 +90,7 @@ def on_message(client, userdata, msg):
         #Create Dictionary and Publish
         #publish_dic = {device : power}
         if(device == "pi" and power == "an"):
-            say(sesssion_id,"Das kann ich leider nicht")
+            say(session_id,"Das kann ich leider nicht")
         
         else:
             publish_dic = {'device' : device, 'power' : power}
