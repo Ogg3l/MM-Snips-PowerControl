@@ -90,11 +90,16 @@ def on_message(client, userdata, msg):
 
         #Create Dictionary and Publish
         #publish_dic = {device : power}
-        publish_dic = {'device' : device, 'power' : power}
-        say(session_id,"Alles klar")
-        mqtt_client.publish((external_topic),json.dumps(publish_dic))
-
+        if(device == "pi" && power == "an"){
+            say(sesssion_id,"Das kann ich leider nicht")
+        }
+        else{
         
+            publish_dic = {'device' : device, 'power' : power}
+            say(session_id,"Alles klar")
+            mqtt_client.publish((external_topic),json.dumps(publish_dic))
+
+        }
 def say (session_id, text):
     mqtt_client.publish('hermes/dialogueManager/endSession', json.dumps({'text' : text, 'sessionId' : session_id}))
                                 
